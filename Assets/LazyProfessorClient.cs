@@ -1,17 +1,11 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-// Create a way for user to create an account (account name and password)
-// The server should have 2 different methods for creating the account and signing in
-// When creating an account, the server will take the input strings, decode them and store them on the server side.
-// Login should require the user to input their name and password which it will send to the server to check.
-// When logging in, itll take the 2 input strings, check the list of accounts for a match and if the name and password match, send back a login succesfull notice
-
-
-public class NetworkedClient : MonoBehaviour
+public class LazyProfessorClient : MonoBehaviour
 {
 
     int connectionID;
@@ -19,7 +13,7 @@ public class NetworkedClient : MonoBehaviour
     int reliableChannelID;
     int unreliableChannelID;
     int hostID;
-    int socketPort = 5491;
+    int socketPort = 5494;
     byte error;
     bool isConnected = false;
     int ourClientID;
@@ -33,8 +27,18 @@ public class NetworkedClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.S))
-            SendMessageToHost("Hello from client");
+        if (Input.GetKeyDown(KeyCode.C))
+            SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + ",100818050,MPCTPass");
+        else if (Input.GetKeyDown(KeyCode.L))
+            SendMessageToHost(ClientToServerTransferSignifiers.Login + ",100818050,MPCTPass");
+
+        else if (Input.GetKeyDown(KeyCode.M))
+            SendMessageToHost(ClientToServerTransferSignifiers.RequestMarkInformation + "");
+        else if (Input.GetKeyDown(KeyCode.I))
+            SendMessageToHost(ClientToServerTransferSignifiers.RequestAccountInformation + "");
+
+        else if (Input.GetKeyDown(KeyCode.D))
+            SendMessageToHost(ClientToServerTransferSignifiers.SubmitDiscordUserName + ",Noot#6854");
 
         UpdateNetworkConnection();
     }
@@ -69,7 +73,7 @@ public class NetworkedClient : MonoBehaviour
             }
         }
     }
-    
+
     private void Connect()
     {
 
@@ -86,8 +90,8 @@ public class NetworkedClient : MonoBehaviour
             hostID = NetworkTransport.AddHost(topology, 0);
             Debug.Log("Socket open.  Host ID = " + hostID);
 
-            connectionID = NetworkTransport.Connect(hostID, "192.168.0.20", socketPort, 0, out error); // server is local on network
-
+            connectionID = NetworkTransport.Connect(hostID, "142.112.20.199", socketPort, 0, out error); 
+            
             if (error == 0)
             {
                 isConnected = true;
@@ -97,12 +101,12 @@ public class NetworkedClient : MonoBehaviour
             }
         }
     }
-    
+
     public void Disconnect()
     {
         NetworkTransport.Disconnect(hostID, connectionID, out error);
     }
-    
+
     public void SendMessageToHost(string msg)
     {
         byte[] buffer = Encoding.Unicode.GetBytes(msg);
@@ -111,7 +115,7 @@ public class NetworkedClient : MonoBehaviour
 
     private void ProcessRecievedMsg(string msg, int id)
     {
-        Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
+        Debug.Log("Server says:  " + msg);
     }
 
     public bool IsConnected()
@@ -122,20 +126,24 @@ public class NetworkedClient : MonoBehaviour
 
 }
 
-public static class ClientToServerSignifiers
+
+public static class ClientToServerTransferSignifiers
 {
     public const int CreateAccount = 1;
+    public const int Login = 2;
+    public const int RequestAccountInformation = 3;
+    public const int RequestMarkInformation = 4;
 
-    public const int LoginAccount = 2;
-}
 
-public static class ServertoClientSignifiers
-{
-    public const int LoginComplete = 1;
+    public const int SubmitEmail = 101;
+    public const int SubmitDiscordUserName = 102;
+    public const int SubmitFirstName = 103;
+    public const int SubmitLastName = 104;
+    public const int SubmitStreamDataLabGitRepoLink = 105;
+    public const int SubmitNetworkedServerGitRepoLink = 106;
+    public const int SubmitNetworkedClientGitRepoLink = 107;
+    public const int SubmitAssignmentOneLink = 108;
+    public const int SubmitAssignmentTwoLink = 109;
 
-    public const int LoginFailed = 2;
 
-    public const int AccountCreationComplete = 3;
-
-    public const int AccountCreationFailed = 4;
 }
