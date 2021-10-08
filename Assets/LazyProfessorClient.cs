@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class LazyProfessorClient : MonoBehaviour
 {
+    GameObject signifierInput, submitButton;
 
     int connectionID;
     int maxConnections = 1000;
@@ -21,24 +23,38 @@ public class LazyProfessorClient : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+
+        foreach (GameObject go in allObjects)
+        {
+            if (go.name == "SignifierInput")
+                signifierInput = go;
+            else if (go.name == "SubmitButton")
+                submitButton = go;
+        }
+
+        submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         Connect();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-            SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + ",100818050,MPCTPass");
-        else if (Input.GetKeyDown(KeyCode.L))
-            SendMessageToHost(ClientToServerTransferSignifiers.Login + ",100818050,MPCTPass");
-
-        else if (Input.GetKeyDown(KeyCode.M))
-            SendMessageToHost(ClientToServerTransferSignifiers.RequestMarkInformation + "");
-        else if (Input.GetKeyDown(KeyCode.I))
-            SendMessageToHost(ClientToServerTransferSignifiers.RequestAccountInformation + "");
-
-        else if (Input.GetKeyDown(KeyCode.D))
-            SendMessageToHost(ClientToServerTransferSignifiers.SubmitDiscordUserName + ",Noot#6854");
+       // if (Input.GetKeyDown(KeyCode.C))
+       //     SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + ",100818050,MPCTPass");
+       // else if (Input.GetKeyDown(KeyCode.L))
+       //     SendMessageToHost(ClientToServerTransferSignifiers.Login + ",100818050,MPCTPass");
+       //
+       // else if (Input.GetKeyDown(KeyCode.M))
+       //     SendMessageToHost(ClientToServerTransferSignifiers.RequestMarkInformation + "");
+       // else if (Input.GetKeyDown(KeyCode.I))
+       //     SendMessageToHost(ClientToServerTransferSignifiers.RequestAccountInformation + "");
+       //
+       // else if (Input.GetKeyDown(KeyCode.D))
+       //     SendMessageToHost(ClientToServerTransferSignifiers.SubmitDiscordUserName + ",Noot#6854");
+       //
+       // else if(Input.GetKeyDown(KeyCode.P))
+       //     SendMessageToHost(ClientToServerTransferSignifiers.SubmitAssignmentTwoLink + ",https://docs.google.com/document/d/1KQIXjxq9BezJpKZx1EOgkA445mRBK8-sgHiuqo4pul8/edit?usp=sharing");
 
         UpdateNetworkConnection();
     }
@@ -123,6 +139,53 @@ public class LazyProfessorClient : MonoBehaviour
         return isConnected;
     }
 
+    public void SubmitButtonPressed()
+    {
+        int signif = int.Parse(signifierInput.GetComponent<InputField>().text);
+
+        switch(signif)
+        {
+            case 1:
+                SendMessageToHost(ClientToServerTransferSignifiers.CreateAccount + ",100818050,MPCTPass");
+                break;
+            case 2:
+                SendMessageToHost(ClientToServerTransferSignifiers.Login + ",100818050,MPCTPass");
+                break;
+            case 3:
+                SendMessageToHost(ClientToServerTransferSignifiers.RequestMarkInformation + "");
+                break;
+            case 4:
+                SendMessageToHost(ClientToServerTransferSignifiers.RequestAccountInformation + "");
+                break;
+            case 101:
+                SendMessageToHost(ClientToServerTransferSignifiers.SubmitEmail + ",tulip.chris@gmail.com");
+                break;
+            case 102:
+                SendMessageToHost(ClientToServerTransferSignifiers.SubmitDiscordUserName + ",Noot#6854");
+                break;
+            case 103:
+                SendMessageToHost(ClientToServerTransferSignifiers.SubmitFirstName + ",Chris");
+                break;
+            case 104:
+                SendMessageToHost(ClientToServerTransferSignifiers.SubmitLastName + ",Tulip");
+                break;
+            case 105:
+                SendMessageToHost(ClientToServerTransferSignifiers.SubmitStreamDataLabGitRepoLink + ",https://github.com/No0ot/GAME3110---Lab1");
+                break;
+            case 106:
+                SendMessageToHost(ClientToServerTransferSignifiers.SubmitNetworkedServerGitRepoLink + ",https://github.com/No0ot/GAME3110-SimplestServer");
+                break;
+            case 107:
+                SendMessageToHost(ClientToServerTransferSignifiers.SubmitNetworkedClientGitRepoLink + ",https://github.com/No0ot/GAME3110-SimplestClient");
+                break;
+            case 108:
+                SendMessageToHost(ClientToServerTransferSignifiers.SubmitAssignmentOneLink + ",https://docs.google.com/document/d/1OzslhHQfyNrLn5lSWf9VdYduolfPA35T8jIQI6XMECw/edit?usp=sharing");
+                break;
+            case 109:
+                SendMessageToHost(ClientToServerTransferSignifiers.SubmitAssignmentTwoLink + ",https://docs.google.com/document/d/1KQIXjxq9BezJpKZx1EOgkA445mRBK8-sgHiuqo4pul8/edit?usp=sharing");
+                break;
+        }
+    }
 
 }
 
