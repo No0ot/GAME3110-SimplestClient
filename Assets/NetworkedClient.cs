@@ -13,8 +13,7 @@ using UnityEngine.Networking;
 
 public class NetworkedClient : MonoBehaviour
 {
-
-    int connectionID;
+    public int connectionID;
     int maxConnections = 1000;
     int reliableChannelID;
     int unreliableChannelID;
@@ -86,7 +85,7 @@ public class NetworkedClient : MonoBehaviour
             hostID = NetworkTransport.AddHost(topology, 0);
             Debug.Log("Socket open.  Host ID = " + hostID);
 
-            connectionID = NetworkTransport.Connect(hostID, "192.168.0.20", socketPort, 0, out error); // server is local on network
+            connectionID = NetworkTransport.Connect(hostID, "192.168.0.10", socketPort, 0, out error); // server is local on network
 
             if (error == 0)
             {
@@ -112,6 +111,33 @@ public class NetworkedClient : MonoBehaviour
     private void ProcessRecievedMsg(string msg, int id)
     {
         Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
+
+        string[] csv = msg.Split(',');
+
+        int signifier = int.Parse(csv[0]);
+
+        switch(signifier)
+        {
+            case ServertoClientSignifiers.LoginComplete:
+                UImanager.Instance.ChangeState(GameStates.MainMenu);
+                Debug.Log("Account Login Complete");
+                break;
+            case ServertoClientSignifiers.LoginFailed:
+                Debug.Log("Account Login Failed");
+                break;
+            case ServertoClientSignifiers.AccountCreationComplete:
+                UImanager.Instance.ChangeState(GameStates.MainMenu);
+                Debug.Log("Account Creation Complete");
+                break;
+            case ServertoClientSignifiers.AccountCreationFailed:
+                Debug.Log("Account Creation Failed");
+                break;
+            case ServertoClientSignifiers.OpponenetPlay:
+                break;
+            case ServertoClientSignifiers.GameStart:
+                UImanager.Instance.ChangeState(GameStates.Game);
+                break;
+        }
     }
 
     public bool IsConnected()
@@ -127,6 +153,10 @@ public static class ClientToServerSignifiers
     public const int CreateAccount = 1;
 
     public const int LoginAccount = 2;
+
+    public const int JoinQueue = 3;
+
+    public const int GameButtonPressed = 4;
 }
 
 public static class ServertoClientSignifiers
@@ -138,4 +168,8 @@ public static class ServertoClientSignifiers
     public const int AccountCreationComplete = 3;
 
     public const int AccountCreationFailed = 4;
+
+    public const int OpponenetPlay = 5;
+
+    public const int GameStart = 6;
 }

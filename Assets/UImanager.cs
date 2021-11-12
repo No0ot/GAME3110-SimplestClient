@@ -5,13 +5,20 @@ using UnityEngine.UI;
 
 public class UImanager : MonoBehaviour
 {
-    GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle;
+    GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle, joinButton, gameButton;
+    GameObject loginPanel, mainMenuPanel, queuepanel, gamePanel;
+
 
     GameObject networkedClient;
+
+    private static UImanager instance;
+    public static UImanager Instance { get { return instance; } }
 
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
 
         foreach(GameObject go in allObjects)
@@ -28,11 +35,24 @@ public class UImanager : MonoBehaviour
                 submitButton = go;
             else if (go.name == "NetworkedClient")
                 networkedClient = go;
+            else if (go.name == "JoinGameRoomButton")
+                joinButton = go;
+            else if (go.name == "LoginMenuPanel")
+                loginPanel = go;
+            else if (go.name == "MainMenuPanel")
+                mainMenuPanel = go;
+            else if (go.name == "GamePanel")
+                gamePanel = go;
+            else if (go.name == "QueuePanel")
+                queuepanel = go;
+            else if (go.name == "GameButton")
+                gameButton = go;
         }
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
+        joinButton.GetComponent<Button>().onClick.AddListener(JoinGameButtonPressed);
+        gameButton.GetComponent<Button>().onClick.AddListener(GameButtonPressed);
 
-        loginToggle.GetComponent<Toggle>().onValueChanged.AddListener(LoginToggleChanged);
-        createToggle.GetComponent<Toggle>().onValueChanged.AddListener(CreateToggleChanged);
+        ChangeState(GameStates.LoginMenu);
     }
 
     public void SubmitButtonPressed()
@@ -49,18 +69,47 @@ public class UImanager : MonoBehaviour
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(msg);
     }
 
-    public void LoginToggleChanged(bool newvalue)
+    public void JoinGameButtonPressed()
     {
-
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.JoinQueue + "");
+        ChangeState(GameStates.WaitingInQueue);
     }
 
-    public void CreateToggleChanged(bool newvalue)
+    public void GameButtonPressed()
     {
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameButtonPressed + "");
+        ChangeState(GameStates.Game);
+    }
 
-    }
-    // Update is called once per frame
-    void Update()
+    public void ChangeState(int newState)
     {
-        
+        mainMenuPanel.SetActive(false);
+        loginPanel.SetActive(false);
+        gamePanel.SetActive(false);
+        queuepanel.SetActive(false);
+
+        switch (newState)
+        {
+            case GameStates.LoginMenu:
+                loginPanel.SetActive(true);
+                break;
+            case GameStates.MainMenu:
+                mainMenuPanel.SetActive(true);
+                break;
+            case GameStates.WaitingInQueue:
+                queuepanel.SetActive(true);
+                break;
+            case GameStates.Game:
+                gamePanel.SetActive(true);
+                break;
+        }
     }
+}
+
+static public class GameStates
+{
+    public const int LoginMenu = 1;
+    public const int MainMenu = 2;
+    public const int WaitingInQueue = 3;
+    public const int Game = 4;
 }
