@@ -50,7 +50,6 @@ public class UImanager : MonoBehaviour
         }
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         joinButton.GetComponent<Button>().onClick.AddListener(JoinGameButtonPressed);
-        gameButton.GetComponent<Button>().onClick.AddListener(GameButtonPressed);
 
         ChangeState(GameStates.LoginMenu);
     }
@@ -78,7 +77,7 @@ public class UImanager : MonoBehaviour
     public void GameButtonPressed()
     {
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameButtonPressed + "");
-        ChangeState(GameStates.Game);
+        //ChangeState(GameStates.Game);
     }
 
     public void ChangeState(int newState)

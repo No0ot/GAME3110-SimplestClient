@@ -32,8 +32,8 @@ public class NetworkedClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.S))
-            SendMessageToHost("Hello from client");
+        if (Input.GetKeyDown(KeyCode.S))
+            Connect();
 
         UpdateNetworkConnection();
     }
@@ -63,6 +63,7 @@ public class NetworkedClient : MonoBehaviour
                     break;
                 case NetworkEventType.DisconnectEvent:
                     isConnected = false;
+                    UImanager.Instance.ChangeState(GameStates.LoginMenu);
                     Debug.Log("disconnected.  " + recConnectionID);
                     break;
             }
@@ -132,10 +133,15 @@ public class NetworkedClient : MonoBehaviour
             case ServertoClientSignifiers.AccountCreationFailed:
                 Debug.Log("Account Creation Failed");
                 break;
-            case ServertoClientSignifiers.OpponenetPlay:
+            case ServertoClientSignifiers.OpponentPlay:
+                GameManager.Instance.UpdateSlot(int.Parse(csv[1]), int.Parse(csv[2]));
+                //Debug.Log(csv[1] + " " + csv[2]);
                 break;
             case ServertoClientSignifiers.GameStart:
                 UImanager.Instance.ChangeState(GameStates.Game);
+                GameManager.Instance.userID = int.Parse(csv[1]);
+                GameManager.Instance.opponentID = int.Parse(csv[2]);
+                GameManager.Instance.startingPlayer = int.Parse(csv[3]);
                 break;
         }
     }
@@ -169,7 +175,7 @@ public static class ServertoClientSignifiers
 
     public const int AccountCreationFailed = 4;
 
-    public const int OpponenetPlay = 5;
+    public const int OpponentPlay = 5;
 
     public const int GameStart = 6;
 }
