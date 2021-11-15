@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class UImanager : MonoBehaviour
 {
-    GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle, joinButton, gameButton;
-    GameObject loginPanel, mainMenuPanel, queuepanel, gamePanel;
+    GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle, joinButton, gameButton, mainMenuButton, observerButton;
+    GameObject loginPanel, mainMenuPanel, queuepanel, gamePanel, endPanel;
 
 
     GameObject networkedClient;
@@ -45,11 +45,19 @@ public class UImanager : MonoBehaviour
                 gamePanel = go;
             else if (go.name == "QueuePanel")
                 queuepanel = go;
+            else if (go.name == "EndPanel")
+                endPanel = go;
             else if (go.name == "GameButton")
                 gameButton = go;
+            else if (go.name == "JoinAsObserverButton")
+                observerButton = go;
+            else if (go.name == "ReturnToMainMenuButton")
+                mainMenuButton = go;
         }
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         joinButton.GetComponent<Button>().onClick.AddListener(JoinGameButtonPressed);
+        observerButton.GetComponent<Button>().onClick.AddListener(WatchAsObserverButtonPressed);
+        mainMenuButton.GetComponent<Button>().onClick.AddListener(MainMenuButtonPressed);
 
         ChangeState(GameStates.LoginMenu);
     }
@@ -74,6 +82,18 @@ public class UImanager : MonoBehaviour
         ChangeState(GameStates.WaitingInQueue);
     }
 
+    public void WatchAsObserverButtonPressed()
+    {
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.JoinAsObserver + "");
+        ChangeState(GameStates.WaitingInQueue);
+    }
+
+    public void MainMenuButtonPressed()
+    {
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.LeaveRoom + "");
+        ChangeState(GameStates.MainMenu);
+    }
+
     public void GameButtonPressed()
     {
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameButtonPressed + "");
@@ -86,6 +106,7 @@ public class UImanager : MonoBehaviour
         loginPanel.SetActive(false);
         gamePanel.SetActive(false);
         queuepanel.SetActive(false);
+        endPanel.SetActive(false);
 
         switch (newState)
         {
@@ -101,6 +122,9 @@ public class UImanager : MonoBehaviour
             case GameStates.Game:
                 gamePanel.SetActive(true);
                 break;
+            case GameStates.End:
+                endPanel.SetActive(true);
+                break;
         }
     }
 }
@@ -111,4 +135,5 @@ static public class GameStates
     public const int MainMenu = 2;
     public const int WaitingInQueue = 3;
     public const int Game = 4;
+    public const int End = 5;
 }

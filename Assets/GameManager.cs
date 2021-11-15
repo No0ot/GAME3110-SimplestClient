@@ -9,11 +9,15 @@ public class GameManager : MonoBehaviour
     public List<Button> playSpaces;
     Text instructions;
 
-    public int userID = 0;
-    public int opponentID = 0;
+    public int player1ID = 0;
+    public int player2ID = 0;
     public int startingPlayer;
+    int moveCount;
 
     string playerIcon;
+
+    string yourTurnText = "It's your turn.";
+    string opponentTurnText = "It's your opponent's turn.";
 
     public int playersTurn = 1;
 
@@ -46,17 +50,19 @@ public class GameManager : MonoBehaviour
         }
 
         instructions = transform.GetChild(2).GetComponent<Text>();
-        if (playersTurn == userID)
-            instructions.text = "It's your turn.";
+        if (playersTurn == player1ID)
+            instructions.text = yourTurnText;
+        else
+            instructions.text = opponentTurnText;
     }
 
     public void SlotPressed(int slot)
     {
-        if (playersTurn == userID)
+        if (playersTurn == player1ID)
         {
             //playSpaces[slot].GetComponentInChildren<Text>().text = playerIcon;
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameButtonPressed + "," + slot + "," + playerIcon);
-            Debug.Log(slot);
+            //Debug.Log(slot);
         }
     }
 
@@ -65,86 +71,99 @@ public class GameManager : MonoBehaviour
         playSpaces[slot].GetComponentInChildren<Text>().text = playericon;
 
         playSpaces[slot].interactable = false;
-        EndTurn();
+        EndTurn(playericon);
 
     }
 
     public void SetupGame()
     {
-        if (startingPlayer == userID)
+        if (startingPlayer == player1ID)
             playerIcon = "X";
         else
             playerIcon = "O";
     }
-    private void EndTurn()
+    private void EndTurn(string currentPlayersIcon)
     {
+        moveCount++;
         //Check Row 1
-        if (playSpaces[0].GetComponentInChildren<Text>().text == playerIcon &&
-            playSpaces[1].GetComponentInChildren<Text>().text == playerIcon &&
-            playSpaces[2].GetComponentInChildren<Text>().text == playerIcon)
+        if (playSpaces[0].GetComponentInChildren<Text>().text == currentPlayersIcon &&
+            playSpaces[1].GetComponentInChildren<Text>().text == currentPlayersIcon &&
+            playSpaces[2].GetComponentInChildren<Text>().text == currentPlayersIcon)
         {
-            GameOver();
+            GameOver(currentPlayersIcon);
         }
         //Check Row 2
-        if (playSpaces[3].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[4].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[5].GetComponentInChildren<Text>().text == playerIcon)
+        if (playSpaces[3].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[4].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[5].GetComponentInChildren<Text>().text == currentPlayersIcon)
         {
-            GameOver();
+            GameOver(currentPlayersIcon);
         }
         //Check Row 3
-        if (playSpaces[6].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[7].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[8].GetComponentInChildren<Text>().text == playerIcon)
+        if (playSpaces[6].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[7].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[8].GetComponentInChildren<Text>().text == currentPlayersIcon)
         {
-            GameOver();
+            GameOver(currentPlayersIcon);
         }
         //Check Col 1
-        if (playSpaces[0].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[3].GetComponentInChildren<Text>().text == playerIcon &&
-            playSpaces[6].GetComponentInChildren<Text>().text == playerIcon)
+        if (playSpaces[0].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[3].GetComponentInChildren<Text>().text == currentPlayersIcon &&
+            playSpaces[6].GetComponentInChildren<Text>().text == currentPlayersIcon)
         {
-            GameOver();
+            GameOver(currentPlayersIcon);
         }
         //Check Col 2
-        if (playSpaces[1].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[4].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[7].GetComponentInChildren<Text>().text == playerIcon)
+        if (playSpaces[1].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[4].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[7].GetComponentInChildren<Text>().text == currentPlayersIcon)
         {
-            GameOver();
+            GameOver(currentPlayersIcon);
         }
         //Check Col 3
-        if (playSpaces[2].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[5].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[8].GetComponentInChildren<Text>().text == playerIcon)
+        if (playSpaces[2].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[5].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[8].GetComponentInChildren<Text>().text == currentPlayersIcon)
         {
-            GameOver();
+            GameOver(currentPlayersIcon);
         }
         //Check Left to Right Diagonal
-        if (playSpaces[0].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[4].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[8].GetComponentInChildren<Text>().text == playerIcon)
+        if (playSpaces[0].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[4].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[8].GetComponentInChildren<Text>().text == currentPlayersIcon)
         {
-            GameOver();
+            GameOver(currentPlayersIcon);
         }
         // Check Right to Left Diagonal
-        if (playSpaces[2].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[4].GetComponentInChildren<Text>().text == playerIcon && 
-            playSpaces[6].GetComponentInChildren<Text>().text == playerIcon)
+        if (playSpaces[2].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[4].GetComponentInChildren<Text>().text == currentPlayersIcon && 
+            playSpaces[6].GetComponentInChildren<Text>().text == currentPlayersIcon)
         {
-            GameOver();
+            GameOver(currentPlayersIcon);
         }
+        if (moveCount > 9)
+            GameOver("draw");
 
         playersTurn = (playersTurn == 1) ? 2 : 1;
+        instructions.text = (instructions.text == yourTurnText) ? opponentTurnText : yourTurnText;
     }
 
-    private void GameOver()
+    private void GameOver(string currentPlayersIcon)
     {
-        Debug.Log("'" + playerIcon + "'" + " Wins");
+        if (currentPlayersIcon != "draw")
+        {
+            string wintext = "'" + currentPlayersIcon + "'" + " Wins";
+            instructions.text = wintext;
+        }
+        else
+            instructions.text = "Game ends in a draw";
+
         foreach (Button but in playSpaces)
         {
             but.interactable = false;
         }
+
+        UImanager.Instance.ChangeState(GameStates.End);
     }
 }
 

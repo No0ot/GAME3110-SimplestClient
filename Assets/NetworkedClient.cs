@@ -140,11 +140,16 @@ public class NetworkedClient : MonoBehaviour
                 break;
             case ServertoClientSignifiers.GameStart:
                 UImanager.Instance.ChangeState(GameStates.Game);
-                GameManager.Instance.userID = int.Parse(csv[1]);
-                GameManager.Instance.opponentID = int.Parse(csv[2]);
+                GameManager.Instance.player1ID = int.Parse(csv[1]);
+                GameManager.Instance.player2ID = int.Parse(csv[2]);
                 GameManager.Instance.startingPlayer = int.Parse(csv[3]);
                 GameManager.Instance.playersTurn = GameManager.Instance.startingPlayer;
                 GameManager.Instance.SetupGame();
+                break;
+            case ServertoClientSignifiers.SendChatMessage:
+                break;
+            case ServertoClientSignifiers.BackToMainMenu:
+                UImanager.Instance.ChangeState(GameStates.MainMenu);
                 break;
         }
     }
@@ -166,6 +171,14 @@ public static class ClientToServerSignifiers
     public const int JoinQueue = 3;
 
     public const int GameButtonPressed = 4;
+
+    public const int PrefixedChatMessageSent = 5;
+
+    public const int ChatMessageSent = 6;
+
+    public const int JoinAsObserver = 7;
+
+    public const int LeaveRoom = 8;
 }
 
 public static class ServertoClientSignifiers
@@ -181,4 +194,8 @@ public static class ServertoClientSignifiers
     public const int OpponentPlay = 5;
 
     public const int GameStart = 6;
+
+    public const int SendChatMessage = 7;
+
+    public const int BackToMainMenu = 8;
 }
