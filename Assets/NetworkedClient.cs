@@ -84,6 +84,7 @@ public class NetworkedClient : MonoBehaviour
             unreliableChannelID = config.AddChannel(QosType.Unreliable);
             HostTopology topology = new HostTopology(config, maxConnections);
             hostID = NetworkTransport.AddHost(topology, 0);
+            config.DisconnectTimeout = 3000;
             Debug.Log("Socket open.  Host ID = " + hostID);
 
             connectionID = NetworkTransport.Connect(hostID, "192.168.0.10", socketPort, 0, out error); // server is local on network
@@ -134,7 +135,7 @@ public class NetworkedClient : MonoBehaviour
                 Debug.Log("Account Creation Failed");
                 break;
             case ServertoClientSignifiers.OpponentPlay:
-                GameManager.Instance.UpdateSlot(int.Parse(csv[1]), int.Parse(csv[2]));
+                GameManager.Instance.UpdateSlot(int.Parse(csv[1]), csv[2]);
                 //Debug.Log(csv[1] + " " + csv[2]);
                 break;
             case ServertoClientSignifiers.GameStart:
@@ -142,6 +143,8 @@ public class NetworkedClient : MonoBehaviour
                 GameManager.Instance.userID = int.Parse(csv[1]);
                 GameManager.Instance.opponentID = int.Parse(csv[2]);
                 GameManager.Instance.startingPlayer = int.Parse(csv[3]);
+                GameManager.Instance.playersTurn = GameManager.Instance.startingPlayer;
+                GameManager.Instance.SetupGame();
                 break;
         }
     }

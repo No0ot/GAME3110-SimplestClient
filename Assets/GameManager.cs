@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     string playerIcon;
 
-    int playersTurn;
+    public int playersTurn = 1;
 
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
         foreach(Button but in playSpaces)
         {
             but.GetComponentInChildren<Text>().text = "";
+            but.interactable = true;
         }
 
         instructions = transform.GetChild(2).GetComponent<Text>();
@@ -53,25 +54,22 @@ public class GameManager : MonoBehaviour
     {
         if (playersTurn == userID)
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameButtonPressed + "," + slot);
-            playSpaces[slot].GetComponentInChildren<Text>().text = playerIcon;
+            //playSpaces[slot].GetComponentInChildren<Text>().text = playerIcon;
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameButtonPressed + "," + slot + "," + playerIcon);
             Debug.Log(slot);
         }
     }
 
-    public void UpdateSlot(int slot, int id)
+    public void UpdateSlot(int slot, string playericon)
     {
-        if(id == 1)
-            playSpaces[slot].GetComponentInChildren<Text>().text = "X";
-        else if(id == 2)
-            playSpaces[slot].GetComponentInChildren<Text>().text = "O";
+        playSpaces[slot].GetComponentInChildren<Text>().text = playericon;
 
         playSpaces[slot].interactable = false;
         EndTurn();
 
     }
 
-    private void SetupGame()
+    public void SetupGame()
     {
         if (startingPlayer == userID)
             playerIcon = "X";
@@ -80,47 +78,73 @@ public class GameManager : MonoBehaviour
     }
     private void EndTurn()
     {
-        //if (playSpaces[0].GetComponentInChildren<Text>().text == "X" &&
-        //    playSpaces[1].GetComponentInChildren<Text>().text == "X" &&
-        //    playSpaces[2].GetComponentInChildren<Text>().text == "X")
-        //{
-        //    GameOver();
-        //}
-        //
-        //if (buttonList[3].text == playerSide && buttonList[4].text == playerSide && buttonList[5].text == playerSide)
-        //{
-        //    GameOver();
-        //}
-        //
-        //if (buttonList[6].text == playerSide && buttonList[7].text == playerSide && buttonList[8].text == playerSide)
-        //{
-        //    GameOver();
-        //}
-        //
-        //if (buttonList[0].text == playerSide && buttonList[3].text == playerSide && buttonList[6].text == playerSide)
-        //{
-        //    GameOver();
-        //}
-        //
-        //if (buttonList[1].text == playerSide && buttonList[4].text == playerSide && buttonList[7].text == playerSide)
-        //{
-        //    GameOver();
-        //}
-        //
-        //if (buttonList[2].text == playerSide && buttonList[5].text == playerSide && buttonList[8].text == playerSide)
-        //{
-        //    GameOver();
-        //}
-        //
-        //if (buttonList[0].text == playerSide && buttonList[4].text == playerSide && buttonList[8].text == playerSide)
-        //{
-        //    GameOver();
-        //}
-        //
-        //if (buttonList[2].text == playerSide && buttonList[4].text == playerSide && buttonList[6].text == playerSide)
-        //{
-        //    GameOver();
-        //}
+        //Check Row 1
+        if (playSpaces[0].GetComponentInChildren<Text>().text == playerIcon &&
+            playSpaces[1].GetComponentInChildren<Text>().text == playerIcon &&
+            playSpaces[2].GetComponentInChildren<Text>().text == playerIcon)
+        {
+            GameOver();
+        }
+        //Check Row 2
+        if (playSpaces[3].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[4].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[5].GetComponentInChildren<Text>().text == playerIcon)
+        {
+            GameOver();
+        }
+        //Check Row 3
+        if (playSpaces[6].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[7].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[8].GetComponentInChildren<Text>().text == playerIcon)
+        {
+            GameOver();
+        }
+        //Check Col 1
+        if (playSpaces[0].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[3].GetComponentInChildren<Text>().text == playerIcon &&
+            playSpaces[6].GetComponentInChildren<Text>().text == playerIcon)
+        {
+            GameOver();
+        }
+        //Check Col 2
+        if (playSpaces[1].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[4].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[7].GetComponentInChildren<Text>().text == playerIcon)
+        {
+            GameOver();
+        }
+        //Check Col 3
+        if (playSpaces[2].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[5].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[8].GetComponentInChildren<Text>().text == playerIcon)
+        {
+            GameOver();
+        }
+        //Check Left to Right Diagonal
+        if (playSpaces[0].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[4].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[8].GetComponentInChildren<Text>().text == playerIcon)
+        {
+            GameOver();
+        }
+        // Check Right to Left Diagonal
+        if (playSpaces[2].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[4].GetComponentInChildren<Text>().text == playerIcon && 
+            playSpaces[6].GetComponentInChildren<Text>().text == playerIcon)
+        {
+            GameOver();
+        }
+
+        playersTurn = (playersTurn == 1) ? 2 : 1;
+    }
+
+    private void GameOver()
+    {
+        Debug.Log("'" + playerIcon + "'" + " Wins");
+        foreach (Button but in playSpaces)
+        {
+            but.interactable = false;
+        }
     }
 }
 
