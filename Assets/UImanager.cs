@@ -8,7 +8,7 @@ public class UImanager : MonoBehaviour
     GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle, joinButton, gameButton, mainMenuButton, observerButton;
     GameObject loginPanel, mainMenuPanel, queuepanel, gamePanel, endPanel;
 
-
+    public ChatScript chatManager;
     GameObject networkedClient;
 
     private static UImanager instance;
@@ -53,6 +53,8 @@ public class UImanager : MonoBehaviour
                 observerButton = go;
             else if (go.name == "ReturnToMainMenuButton")
                 mainMenuButton = go;
+            else if (go.name == "ChatPanel")
+                chatManager = go.GetComponent<ChatScript>();
         }
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         joinButton.GetComponent<Button>().onClick.AddListener(JoinGameButtonPressed);
@@ -123,6 +125,7 @@ public class UImanager : MonoBehaviour
                 gamePanel.SetActive(true);
                 break;
             case GameStates.End:
+                gamePanel.SetActive(true);
                 endPanel.SetActive(true);
                 break;
         }

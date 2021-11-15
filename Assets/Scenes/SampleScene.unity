@@ -227,6 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea9fac27c3b4cf8428836d72f145dc44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatManager: {fileID: 1566455424}
 --- !u!4 &96279139
 Transform:
   m_ObjectHideFlags: 0
@@ -2887,7 +2888,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1096528387}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1566455424}
+        m_TargetAssemblyTypeName: ChatScript, Assembly-CSharp
+        m_MethodName: PrefixedMessageButtonpressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1096528386}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1096528387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3162,7 +3175,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1144717670}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1566455424}
+        m_TargetAssemblyTypeName: ChatScript, Assembly-CSharp
+        m_MethodName: PrefixedMessageButtonpressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1144717669}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1144717670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3733,7 +3758,7 @@ GameObject:
   - component: {fileID: 1336154354}
   - component: {fileID: 1336154353}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: PrefixedChatMessages
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4512,7 +4537,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1492535079}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1566455424}
+        m_TargetAssemblyTypeName: ChatScript, Assembly-CSharp
+        m_MethodName: PrefixedMessageButtonpressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1492535078}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1492535079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4633,7 +4670,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1496246380}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1566455424}
+        m_TargetAssemblyTypeName: ChatScript, Assembly-CSharp
+        m_MethodName: PrefixedMessageButtonpressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1496246379}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1496246380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5047,6 +5096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78facb26fb6754d4ebd562cc677d0f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatBox: {fileID: 1725550820}
 --- !u!114 &1566455425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5167,7 +5217,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1566905970}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1566455424}
+        m_TargetAssemblyTypeName: ChatScript, Assembly-CSharp
+        m_MethodName: PrefixedMessageButtonpressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1566905969}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1566905970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5618,7 +5680,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1670774324}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1566455424}
+        m_TargetAssemblyTypeName: ChatScript, Assembly-CSharp
+        m_MethodName: PrefixedMessageButtonpressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1670774323}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1670774324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6225,7 +6299,7 @@ GameObject:
   - component: {fileID: 1725550821}
   - component: {fileID: 1725550820}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ChatBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6283,12 +6357,30 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget molestie
-    odio. Sed sit amet vestibulum ex. Morbi vitae eros tincidunt, pellentesque sem
-    ac, bibendum turpis. Sed nec ligula at sem consectetur vulputate sit amet sed
-    neque. Donec volutpat lorem imperdiet, malesuada metus quis, ultrices quam. Morbi
-    nec convallis enim. Nam mollis congue libero, vel vestibulum lectus viverra a.
-    In hac habitasse platea dictumst. '
+  m_Text: 'Player1: lets have Fun!
+
+    Player1: lets have Fun!
+
+    Player1: lets
+    have Fun!
+
+    Player1: lets have Fun!
+
+    Player1: lets have Fun!
+
+    Player1:
+    lets have Fun!
+
+    Player1: lets have Fun!
+
+    Player1: lets have Fun!
+
+    Player1:
+    lets have Fun!
+
+    Player1: lets have Fun!
+
+    Player1: lets have Fun!'
 --- !u!222 &1725550821
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -147,6 +147,7 @@ public class NetworkedClient : MonoBehaviour
                 GameManager.Instance.SetupGame();
                 break;
             case ServertoClientSignifiers.SendChatMessage:
+                UImanager.Instance.chatManager.UpdateChatLog(csv[1], csv[2]);
                 break;
             case ServertoClientSignifiers.BackToMainMenu:
                 UImanager.Instance.ChangeState(GameStates.MainMenu);
@@ -172,13 +173,11 @@ public static class ClientToServerSignifiers
 
     public const int GameButtonPressed = 4;
 
-    public const int PrefixedChatMessageSent = 5;
+    public const int ChatMessageSent = 5;
 
-    public const int ChatMessageSent = 6;
+    public const int JoinAsObserver = 6;
 
-    public const int JoinAsObserver = 7;
-
-    public const int LeaveRoom = 8;
+    public const int LeaveRoom = 7;
 }
 
 public static class ServertoClientSignifiers
