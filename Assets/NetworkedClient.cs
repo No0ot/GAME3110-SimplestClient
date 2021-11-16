@@ -143,8 +143,10 @@ public class NetworkedClient : MonoBehaviour
                 GameManager.Instance.player1ID = int.Parse(csv[1]);
                 GameManager.Instance.player2ID = int.Parse(csv[2]);
                 GameManager.Instance.startingPlayer = int.Parse(csv[3]);
+                Debug.Log("Starting player: " + GameManager.Instance.startingPlayer);
                 GameManager.Instance.playersTurn = GameManager.Instance.startingPlayer;
-                GameManager.Instance.SetupGame();
+                GameManager.Instance.SetupGame(int.Parse(csv[4]));
+                GameManager.Instance.ResetBoard();
                 break;
             case ServertoClientSignifiers.SendChatMessage:
                 UImanager.Instance.chatManager.UpdateChatLog(csv[1], csv[2]);

@@ -7,19 +7,19 @@ public class GameManager : MonoBehaviour
 {
     GameObject networkedClient;
     public List<Button> playSpaces;
-    Text instructions;
+    public Text instructions;
 
     public int player1ID = 0;
     public int player2ID = 0;
     public int startingPlayer;
-    int moveCount;
+    public int moveCount;
 
     string playerIcon;
 
     string yourTurnText = "It's your turn.";
     string opponentTurnText = "It's your opponent's turn.";
 
-    public int playersTurn = 1;
+    public int playersTurn;
 
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
@@ -43,17 +43,7 @@ public class GameManager : MonoBehaviour
             playSpaces.Add(transform.GetChild(0).GetChild(i).GetComponent<Button>());
         }
 
-        foreach(Button but in playSpaces)
-        {
-            but.GetComponentInChildren<Text>().text = "";
-            but.interactable = true;
-        }
-
-        instructions = transform.GetChild(2).GetComponent<Text>();
-        if (playersTurn == player1ID)
-            instructions.text = yourTurnText;
-        else
-            instructions.text = opponentTurnText;
+        ResetBoard();
     }
 
     public void SlotPressed(int slot)
@@ -75,8 +65,13 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void SetupGame()
+    public void SetupGame(int connectingID)
     {
+        if (connectingID != player1ID && connectingID != player2ID)
+        {
+            playerIcon = "Observer";
+            return;
+        }
         if (startingPlayer == player1ID)
             playerIcon = "X";
         else
@@ -84,7 +79,12 @@ public class GameManager : MonoBehaviour
     }
     private void EndTurn(string currentPlayersIcon)
     {
-        moveCount++;
+        playersTurn = (playersTurn == player1ID) ? player2ID : player1ID;
+        if (playerIcon != "Observer")
+            instructions.text = (instructions.text == yourTurnText) ? opponentTurnText : yourTurnText;
+        else
+            instructions.text = "Enjoy the Show!";
+        
         //Check Row 1
         if (playSpaces[0].GetComponentInChildren<Text>().text == currentPlayersIcon &&
             playSpaces[1].GetComponentInChildren<Text>().text == currentPlayersIcon &&
@@ -141,18 +141,19 @@ public class GameManager : MonoBehaviour
         {
             GameOver(currentPlayersIcon);
         }
-        if (moveCount > 9)
+        moveCount++;
+        if (moveCount > 8)
             GameOver("draw");
 
-        playersTurn = (playersTurn == 1) ? 2 : 1;
-        instructions.text = (instructions.text == yourTurnText) ? opponentTurnText : yourTurnText;
+        
     }
 
-    private void GameOver(string currentPlayersIcon)
+    private void GameOver(string temp)
     {
-        if (currentPlayersIcon != "draw")
+        Debug.Log(temp);
+        if (temp != "draw")
         {
-            string wintext = "'" + currentPlayersIcon + "'" + " Wins";
+            string wintext = "'" + temp + "'" + " Wins";
             instructions.text = wintext;
         }
         else
@@ -164,6 +165,28 @@ public class GameManager : MonoBehaviour
         }
 
         UImanager.Instance.ChangeState(GameStates.End);
+    }
+
+    public void ResetBoard()
+    {
+        moveCount = 0;
+        UImanager.Instance.chatManager.ResetChat();
+
+        foreach (Button but in playSpaces)
+        {
+            but.GetComponentInChildren<Text>().text = "";
+            but.interactable = true;
+        }
+
+        if(playerIcon == "Observer")
+        {
+            instructions.text = "Enjoy the Show!";
+            return;
+        }
+        if (playersTurn == player1ID)
+            instructions.text = yourTurnText;
+        else
+            instructions.text = opponentTurnText;
     }
 }
 

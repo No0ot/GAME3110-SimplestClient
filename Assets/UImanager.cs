@@ -61,6 +61,12 @@ public class UImanager : MonoBehaviour
         observerButton.GetComponent<Button>().onClick.AddListener(WatchAsObserverButtonPressed);
         mainMenuButton.GetComponent<Button>().onClick.AddListener(MainMenuButtonPressed);
 
+
+        loginPanel.SetActive(false);
+        mainMenuPanel.SetActive(false);
+        gamePanel.SetActive(false);
+        queuepanel.SetActive(false);
+        endPanel.SetActive(false);
         ChangeState(GameStates.LoginMenu);
     }
 
@@ -104,11 +110,6 @@ public class UImanager : MonoBehaviour
 
     public void ChangeState(int newState)
     {
-        mainMenuPanel.SetActive(false);
-        loginPanel.SetActive(false);
-        gamePanel.SetActive(false);
-        queuepanel.SetActive(false);
-        endPanel.SetActive(false);
 
         switch (newState)
         {
@@ -116,16 +117,22 @@ public class UImanager : MonoBehaviour
                 loginPanel.SetActive(true);
                 break;
             case GameStates.MainMenu:
+                loginPanel.SetActive(false);
+                gamePanel.SetActive(false);
+                endPanel.SetActive(false);
                 mainMenuPanel.SetActive(true);
                 break;
             case GameStates.WaitingInQueue:
+                mainMenuPanel.SetActive(false);
                 queuepanel.SetActive(true);
                 break;
             case GameStates.Game:
+                mainMenuPanel.SetActive(false);
+                queuepanel.SetActive(false);
                 gamePanel.SetActive(true);
                 break;
             case GameStates.End:
-                gamePanel.SetActive(true);
+                //gamePanel.SetActive(true);
                 endPanel.SetActive(true);
                 break;
         }

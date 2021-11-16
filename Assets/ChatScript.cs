@@ -7,18 +7,27 @@ public class ChatScript : MonoBehaviour
 {
     GameObject networkedClient;
 
-    public Text chatBox;
+    public Text chatLog;
     List<string> chatMessages;
 
-    private void Start()
+    InputField chatBox;
+
+    private void Awake()
     {
         chatMessages = new List<string>();
+    }
+    private void Start()
+    {
+
+        chatLog.text = "";
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
 
         foreach (GameObject go in allObjects)
         {
             if (go.name == "NetworkedClient")
                 networkedClient = go;
+            else if (go.name == "ChatField")
+                chatBox = go.GetComponent<InputField>();
         }
     }
 
@@ -29,18 +38,37 @@ public class ChatScript : MonoBehaviour
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ChatMessageSent + "," + msg);
     }
 
+    public void SubmitButtonPressed()
+    {
+        if (chatBox.text != "")
+        {
+            string msg = chatBox.text;
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.ChatMessageSent + "," + msg);
+        }
+        chatBox.text = "";
+    }
+
     public void UpdateChatLog(string playername, string chatMsg)
     {
         string newMsg = playername + ": " + chatMsg;
         chatMessages.Add(newMsg);
-        if(chatMessages.Count > 9)
+        if(chatMessages.Count > 10)
         {
             chatMessages.RemoveAt(0);
         }
-        chatBox.text = "";
+        chatLog.text = "";
         foreach (string msg in chatMessages)
         {
-            chatBox.text += msg + "\n";
+            chatLog.text += msg + "\n";
         }
+    }
+
+    public void ResetChat()
+    {
+        foreach(string msg in chatMessages)
+        {
+            chatMessages.Remove(msg);
+        }
+        chatLog.text = "";
     }
 }
