@@ -102,6 +102,12 @@ public class UImanager : MonoBehaviour
         ChangeState(GameStates.MainMenu);
     }
 
+    public void ReplayButtonPressed()
+    {
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GetReplay + "");
+        ChangeState(GameStates.Game);
+    }
+
     public void GameButtonPressed()
     {
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameButtonPressed + "");
@@ -129,6 +135,7 @@ public class UImanager : MonoBehaviour
             case GameStates.Game:
                 mainMenuPanel.SetActive(false);
                 queuepanel.SetActive(false);
+                endPanel.SetActive(false);
                 gamePanel.SetActive(true);
                 break;
             case GameStates.End:

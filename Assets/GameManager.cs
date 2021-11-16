@@ -13,8 +13,10 @@ public class GameManager : MonoBehaviour
     public int player2ID = 0;
     public int startingPlayer;
     public int moveCount;
+    int replayActionIndex = 0;
 
     string playerIcon;
+    bool gameOver = false;
 
     string yourTurnText = "It's your turn.";
     string opponentTurnText = "It's your opponent's turn.";
@@ -66,6 +68,11 @@ public class GameManager : MonoBehaviour
         playSpaces[slot].interactable = false;
         EndTurn(playericon);
 
+    }
+
+    public void ReplaySlot(int slot, string playericon)
+    {
+        playSpaces[slot].GetComponentInChildren<Text>().text = playericon;
     }
 
     public void SetupGame(int connectingID)
@@ -144,7 +151,8 @@ public class GameManager : MonoBehaviour
         {
             GameOver(currentPlayersIcon);
         }
-        moveCount++;
+            moveCount++;
+
         if (moveCount > 8)
             GameOver("draw");
 
@@ -153,7 +161,7 @@ public class GameManager : MonoBehaviour
 
     private void GameOver(string temp)
     {
-        Debug.Log(temp);
+        gameOver = true;
         if (temp != "draw")
         {
             string wintext = "'" + temp + "'" + " Wins";
@@ -173,6 +181,7 @@ public class GameManager : MonoBehaviour
     public void ResetBoard()
     {
         moveCount = 0;
+        replayActionIndex = 0;
         UImanager.Instance.chatManager.ResetChat();
 
         foreach (Button but in playSpaces)
@@ -192,6 +201,15 @@ public class GameManager : MonoBehaviour
             instructions.text = opponentTurnText;
     }
 
+    public void PrepBoardforReplay()
+    {
+        foreach (Button but in playSpaces)
+        {
+            but.GetComponentInChildren<Text>().text = "";
+            but.interactable = false;
+        }
+    }
+
     public void Replay(int slot, string playericon, int isObserver)
     {
         if(isObserver == 1)
@@ -199,7 +217,17 @@ public class GameManager : MonoBehaviour
             UpdateSlot(slot, playericon);
         }
         else
-            UpdateSlot(slot, playericon);
+        {
+            StartCoroutine(ShowReplayAction(replayActionIndex, slot, playericon));
+            replayActionIndex++;
+        }
     }
+
+    IEnumerator ShowReplayAction(int i, int slot, string playericon)
+    {
+        yield return new WaitForSeconds(1.0f * i);
+        ReplaySlot(slot, playericon);
+    }
+
 }
 
