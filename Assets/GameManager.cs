@@ -50,9 +50,12 @@ public class GameManager : MonoBehaviour
     {
         if (playersTurn == player1ID)
         {
-            //playSpaces[slot].GetComponentInChildren<Text>().text = playerIcon;
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameButtonPressed + "," + slot + "," + playerIcon);
-            //Debug.Log(slot);
+            if (playerIcon != "Observer")
+            {
+                //playSpaces[slot].GetComponentInChildren<Text>().text = playerIcon;
+                networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameButtonPressed + "," + slot + "," + playerIcon);
+                //Debug.Log(slot);
+            }
         }
     }
 
@@ -187,6 +190,16 @@ public class GameManager : MonoBehaviour
             instructions.text = yourTurnText;
         else
             instructions.text = opponentTurnText;
+    }
+
+    public void Replay(int slot, string playericon, int isObserver)
+    {
+        if(isObserver == 1)
+        {
+            UpdateSlot(slot, playericon);
+        }
+        else
+            UpdateSlot(slot, playericon);
     }
 }
 

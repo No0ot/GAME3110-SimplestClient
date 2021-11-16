@@ -154,6 +154,9 @@ public class NetworkedClient : MonoBehaviour
             case ServertoClientSignifiers.BackToMainMenu:
                 UImanager.Instance.ChangeState(GameStates.MainMenu);
                 break;
+            case ServertoClientSignifiers.SendReplay:
+                GameManager.Instance.Replay(int.Parse(csv[1]), csv[2], int.Parse(csv[3]));
+                break;
         }
     }
 
@@ -161,8 +164,6 @@ public class NetworkedClient : MonoBehaviour
     {
         return isConnected;
     }
-
-
 }
 
 public static class ClientToServerSignifiers
@@ -180,6 +181,8 @@ public static class ClientToServerSignifiers
     public const int JoinAsObserver = 6;
 
     public const int LeaveRoom = 7;
+
+    public const int GetReplay = 8;
 }
 
 public static class ServertoClientSignifiers
@@ -199,4 +202,6 @@ public static class ServertoClientSignifiers
     public const int SendChatMessage = 7;
 
     public const int BackToMainMenu = 8;
+
+    public const int SendReplay = 9;
 }
