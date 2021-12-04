@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
     GameObject networkedClient;
     public List<Button> playSpaces;
     public Text instructions;

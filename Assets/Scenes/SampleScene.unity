@@ -227,7 +227,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea9fac27c3b4cf8428836d72f145dc44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  submitButton: {fileID: 1609902902}
+  userNameInput: {fileID: 340113209}
+  passwordInput: {fileID: 289976452}
+  createToggle: {fileID: 1207908362}
+  loginToggle: {fileID: 1200887967}
+  loginPanel: {fileID: 1692359627}
+  joinButton: {fileID: 1803905827}
+  queuepanel: {fileID: 492578556}
+  mainMenuPanel: {fileID: 913114927}
+  observerButton: {fileID: 1530610717}
+  mainMenuButton: {fileID: 1328769656}
+  gamePanel: {fileID: 923995948}
+  endPanel: {fileID: 905447479}
   chatManager: {fileID: 1566455424}
+  networkedClient: {fileID: 375913986}
 --- !u!4 &96279139
 Transform:
   m_ObjectHideFlags: 0
@@ -1413,6 +1427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be507d6e4bfbd814e8a20ea4651c197c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkedClient: {fileID: 375913986}
   playSpaces: []
   instructions: {fileID: 480132022}
   player1ID: 0
@@ -3708,7 +3723,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1328769659}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 96279138}
+        m_TargetAssemblyTypeName: UImanager, Assembly-CSharp
+        m_MethodName: MainMenuButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1328769659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4805,7 +4832,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1530610720}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 96279138}
+        m_TargetAssemblyTypeName: UImanager, Assembly-CSharp
+        m_MethodName: WatchAsObserverButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1530610720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5110,7 +5149,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78facb26fb6754d4ebd562cc677d0f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkedClient: {fileID: 375913986}
   chatLog: {fileID: 1725550820}
+  chatBox: {fileID: 1902747197}
 --- !u!114 &1566455425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5318,7 +5359,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -291, y: -360}
+  m_AnchoredPosition: {x: 0, y: -360}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1609902904
@@ -5364,7 +5405,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1609902905}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 96279138}
+        m_TargetAssemblyTypeName: UImanager, Assembly-CSharp
+        m_MethodName: SubmitButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1609902905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6485,7 +6538,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1803905830}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 96279138}
+        m_TargetAssemblyTypeName: UImanager, Assembly-CSharp
+        m_MethodName: JoinGameButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1803905830
 MonoBehaviour:
   m_ObjectHideFlags: 0

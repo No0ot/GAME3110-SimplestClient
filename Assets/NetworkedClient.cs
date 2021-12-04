@@ -87,7 +87,7 @@ public class NetworkedClient : MonoBehaviour
             config.DisconnectTimeout = 3000;
             Debug.Log("Socket open.  Host ID = " + hostID);
 
-            connectionID = NetworkTransport.Connect(hostID, "192.168.0.10", socketPort, 0, out error); // server is local on network
+            connectionID = NetworkTransport.Connect(hostID, "192.168.0.13", socketPort, 0, out error); // server is local on network
 
             if (error == 0)
             {

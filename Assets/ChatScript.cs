@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class ChatScript : MonoBehaviour
 {
+    [SerializeField]
     GameObject networkedClient;
 
     public Text chatLog;
     List<string> chatMessages;
-
+    [SerializeField]
     InputField chatBox;
 
     private void Awake()
@@ -18,17 +19,7 @@ public class ChatScript : MonoBehaviour
     }
     private void Start()
     {
-
         chatLog.text = "";
-        GameObject[] allObjects = FindObjectsOfType<GameObject>();
-
-        foreach (GameObject go in allObjects)
-        {
-            if (go.name == "NetworkedClient")
-                networkedClient = go;
-            else if (go.name == "ChatField")
-                chatBox = go.GetComponent<InputField>();
-        }
     }
 
 

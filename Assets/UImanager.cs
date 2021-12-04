@@ -5,10 +5,25 @@ using UnityEngine.UI;
 
 public class UImanager : MonoBehaviour
 {
-    GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle, joinButton, gameButton, mainMenuButton, observerButton;
-    GameObject loginPanel, mainMenuPanel, queuepanel, gamePanel, endPanel;
+    [Header("Login Menu References")]
+    [SerializeField]GameObject submitButton;
+    [SerializeField]GameObject userNameInput;
+    [SerializeField]GameObject passwordInput;
+    [SerializeField]GameObject createToggle;
+    [SerializeField]GameObject loginToggle;
+    [SerializeField]GameObject loginPanel;
+    [Header("Main Menu References")]
+    [SerializeField] GameObject joinButton;
+    [SerializeField] GameObject queuepanel;
+    [SerializeField] GameObject mainMenuPanel;
+    [SerializeField] GameObject observerButton;
+    [Header("Game UI References")]
+    [SerializeField] GameObject mainMenuButton;
+    [SerializeField] GameObject gamePanel;
+    [SerializeField] GameObject endPanel;
 
     public ChatScript chatManager;
+    [SerializeField]
     GameObject networkedClient;
 
     private static UImanager instance;
@@ -18,49 +33,10 @@ public class UImanager : MonoBehaviour
     void Start()
     {
         instance = this;
-
-        GameObject[] allObjects = FindObjectsOfType<GameObject>();
-
-        foreach(GameObject go in allObjects)
-        {
-            if (go.name == "UsernameInput")
-                userNameInput = go;
-            else if (go.name == "PasswordInput")
-                passwordInput = go;
-            else if (go.name == "CreateToggle")
-                createToggle = go;
-            else if (go.name == "LoginToggle")
-                loginToggle = go;
-            else if (go.name == "SubmitButton")
-                submitButton = go;
-            else if (go.name == "NetworkedClient")
-                networkedClient = go;
-            else if (go.name == "JoinGameRoomButton")
-                joinButton = go;
-            else if (go.name == "LoginMenuPanel")
-                loginPanel = go;
-            else if (go.name == "MainMenuPanel")
-                mainMenuPanel = go;
-            else if (go.name == "GamePanel")
-                gamePanel = go;
-            else if (go.name == "QueuePanel")
-                queuepanel = go;
-            else if (go.name == "EndPanel")
-                endPanel = go;
-            else if (go.name == "GameButton")
-                gameButton = go;
-            else if (go.name == "JoinAsObserverButton")
-                observerButton = go;
-            else if (go.name == "ReturnToMainMenuButton")
-                mainMenuButton = go;
-            else if (go.name == "ChatPanel")
-                chatManager = go.GetComponent<ChatScript>();
-        }
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         joinButton.GetComponent<Button>().onClick.AddListener(JoinGameButtonPressed);
         observerButton.GetComponent<Button>().onClick.AddListener(WatchAsObserverButtonPressed);
         mainMenuButton.GetComponent<Button>().onClick.AddListener(MainMenuButtonPressed);
-
 
         loginPanel.SetActive(false);
         mainMenuPanel.SetActive(false);
@@ -74,8 +50,8 @@ public class UImanager : MonoBehaviour
     {
         string n = userNameInput.GetComponent<InputField>().text;
         string p = passwordInput.GetComponent<InputField>().text;
-
         string msg;
+
         if(createToggle.GetComponent<Toggle>().isOn)
             msg = ClientToServerSignifiers.CreateAccount + "," + n + "," + p;
         else
@@ -120,6 +96,10 @@ public class UImanager : MonoBehaviour
         switch (newState)
         {
             case GameStates.LoginMenu:
+                mainMenuPanel.SetActive(false);
+                gamePanel.SetActive(false);
+                queuepanel.SetActive(false);
+                endPanel.SetActive(false);
                 loginPanel.SetActive(true);
                 break;
             case GameStates.MainMenu:
